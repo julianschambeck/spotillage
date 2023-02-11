@@ -13,9 +13,10 @@ var cors = require('cors');
 var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
 
-var client_id = 'CLIENT_ID'; // Your client id
-var client_secret = 'CLIENT_SECRET'; // Your secret
-var redirect_uri = 'REDIRECT_URI'; // Your redirect uri
+var client_id = '552221d4641b47f68d756645b7cc32ba'; // Your client id
+var client_secret = '9c4705b47da545de9ef9b6e77921de46'; // Your secret
+var redirect_uri = 'http://localhost:8888/callback'; // Your redirect uri
+var frontend = "http://localhost:3000/";
 
 /**
  * Generates a random string containing numbers and letters
@@ -67,7 +68,7 @@ app.get('/callback', function(req, res) {
   var storedState = req.cookies ? req.cookies[stateKey] : null;
 
   if (state === null || state !== storedState) {
-    res.redirect('/#' +
+    res.redirect(frontend +
       querystring.stringify({
         error: 'state_mismatch'
       }));
@@ -104,13 +105,14 @@ app.get('/callback', function(req, res) {
         });
 
         // we can also pass the token to the browser to make requests from there
-        res.redirect('/#' +
+        console.log("redirect to frontend", frontend);
+        res.redirect(frontend +
           querystring.stringify({
             access_token: access_token,
             refresh_token: refresh_token
           }));
       } else {
-        res.redirect('/#' +
+        res.redirect(frontend +
           querystring.stringify({
             error: 'invalid_token'
           }));
