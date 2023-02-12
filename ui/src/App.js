@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+import Home from  "./components/Home.jsx";
+
 function App() {
     const initialState = {
         isLoggedIn: false,
@@ -12,7 +14,7 @@ function App() {
             window.location.origin + window.location.pathname.replace("/", "?")
         );
         const params = new URLSearchParams(url.search);
-        setUserState({
+         setUserState({
             isLoggedIn: params.has("access_token"),
             accessToken: params.get("access_token"),
             refreshToken: params.get("refresh_token")
@@ -21,8 +23,9 @@ function App() {
     return (
         <>
             {userState.isLoggedIn ? (
-                <div>Welcome to home page</div>
+                <Home accessToken={userState.accessToken}/>
             ) : (
+                // Login Screen
                 <div>
                     <p>
                         Press <a href="http://localhost:8888/login">here</a> to
