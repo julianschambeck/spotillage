@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 const BASE_URL = "https://api.spotify.com/v1/me/top";
 
 function Home({ accessToken }) {
-    const [topArtists, setTopArtists] = useState([]);
+    const [favoriteArtists, setFavoriteArtists] = useState([]);
 
     function getTopArtists() {
         const query = new URLSearchParams({
@@ -22,9 +22,9 @@ function Home({ accessToken }) {
                 return res.json();
             })
             .then((json) => {
-                const topArtists = [];
+                const favoriteArtists = [];
                 json.items.forEach((artist) => {
-                    topArtists.push({
+                    favoriteArtists.push({
                         id: artist.id,
                         name: artist.name,
                         genres: artist.genres,
@@ -32,15 +32,15 @@ function Home({ accessToken }) {
                         popularity: artist.popularity,
                         url: artist.external_urls.spotify,
                         followersCount: artist.followers.total,
-                        myTopTracks: []
+                        myFavoriteTracks: []
                     });
                 });
-                return topArtists;
+                return favoriteArtists;
             })
             .catch((error) => console.error(error.message));
     }
 
-    function mapTracksToArtists(topArtists) {
+    function mapTracksToArtists(artists) {
         const query = new URLSearchParams({
             limit: 30
         });
@@ -57,8 +57,8 @@ function Home({ accessToken }) {
                 return res.json();
             })
             .then((json) => {
-                const myTopArtists = [...topArtists];
-                // map top tracks to my top artists
+                const favoriteArtists = [...artists];
+                // map my favorite tracks to my favorite artists
                 const tracks = json.items;
                 tracks.forEach((current) => {
                     const artistsOfTrack = current.artists;
@@ -70,31 +70,34 @@ function Home({ accessToken }) {
                         url: current.external_urls.spotify,
                         albumName: current.album.name
                     };
-                    const respectiveArtist = myTopArtists.find(
-                        (topArtist) =>
+                    const associatedArtist = favoriteArtists.find(
+                        (favoriteArtist) =>
                             !!artistsOfTrack.find(
-                                (artistOfTrack) =>
-                                    artistOfTrack.id === topArtist.id
+                                (artist) => artist.id === favoriteArtist.id
                             )
                     );
-                    if (respectiveArtist) {
-                        respectiveArtist.myTopTracks.push(track);
+                    if (associatedArtist) {
+                        // the track is from one of my favorite artists
+                        associatedArtist.myFavoriteTracks.push(track);
                     }
                 });
-                return myTopArtists;
+                return favoriteArtists;
             })
             .catch((error) => console.error(error.message));
     }
 
     useEffect(() => {
-        getTopArtists().then((topArtists) => {
-            mapTracksToArtists(topArtists).then((updatedTopArtists) => {
-                console.log(JSON.stringify(updatedTopArtists, null, "\t"));
+        getTopArtists().then((artists) => {
+            mapTracksToArtists(artists).then((artists) => {
+                // console.log(JSON.stringify(artists, null, "\t"));
+                setFavoriteArtists(artists);
             });
         });
     }, []);
 
-    return <div>Welcome to home page</div>;
+    return (
+        <div>Welcome to home page</div>
+    );
 }
 
 export default Home;
