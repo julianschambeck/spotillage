@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 
+import { Tile } from "./Tile.jsx";
+
 const BASE_URL = "https://api.spotify.com/v1/me/top";
 
 function Home({ accessToken }) {
+    const [isLoading, setIsLoading] = useState(true);
     const [favoriteArtists, setFavoriteArtists] = useState([]);
 
     function getTopArtists() {
@@ -28,7 +31,7 @@ function Home({ accessToken }) {
                         id: artist.id,
                         name: artist.name,
                         genres: artist.genres,
-                        imageDetails: artist.images[0],
+                        imageDetails: artist.images[2],
                         popularity: artist.popularity,
                         url: artist.external_urls.spotify,
                         followersCount: artist.followers.total,
@@ -91,14 +94,29 @@ function Home({ accessToken }) {
             mapTracksToArtists(artists).then((artists) => {
                 // console.log(JSON.stringify(artists, null, "\t"));
                 setFavoriteArtists(artists);
+                setIsLoading(false);
             });
         });
     }, []);
 
     return (
-        <div>Welcome to home page</div>
+        <>
+            {isLoading ? (
+                <div>Still loading, just a sec</div>
+            ) : (
+                <div
+                    style={{
+                        display: "flex",
+                        flexDirection: "column"
+                    }}
+                >
+                    {favoriteArtists.slice(0, 4).map((current, index) => {
+                        return <Tile artist={current} key={index}/>;
+                    })}
+                </div>
+            )}
+        </>
     );
 }
 
 export default Home;
-
