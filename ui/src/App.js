@@ -1,40 +1,39 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-import Home from  "./components/Home.jsx";
+import Home from "./components/Home.jsx";
 
 function App() {
-    const initialState = {
-        isLoggedIn: false,
+    const [userState, setUserState] = useState({
+        auth: false,
         accessToken: "",
         refreshToken: ""
-    };
-    const [userState, setUserState] = useState(initialState);
-    function storeToken() {
-        const url = new URL(
-            window.location.origin + window.location.pathname.replace("/", "?")
-        );
-        const params = new URLSearchParams(url.search);
-         setUserState({
-            isLoggedIn: params.has("access_token"),
-            accessToken: params.get("access_token"),
-            refreshToken: params.get("refresh_token")
-        });
-    }
+    });
+
+    useEffect(() => {
+        let url =
+            window.location.origin + window.location.pathname.replace("/", "?");
+        if (url.includes("access_token") && !userState.auth) {
+            url = new URL(url);
+            const params = new URLSearchParams(url.search);
+            setUserState({
+                auth: params.has("access_token"),
+                accessToken: params.get("access_token"),
+                refreshToken: params.get("refresh_token")
+            });
+        }
+    }, []);
+
     return (
         <>
-            {userState.isLoggedIn ? (
-                <Home accessToken={userState.accessToken}/>
+            {userState.auth ? (
+                <Home authToken={userState.accessToken} />
             ) : (
-                // Login Screen
+                // login screen
                 <div>
                     <p>
-                        Press <a href="http://localhost:8888/login">here</a> to
-                        login to Spotify and authorize access to relevant
-                        Spotify data
+                        You need to login to Spotify first{" "}
+                        <a href="http://localhost:8888/login">here</a>
                     </p>
-                    <div>
-                        <button onClick={storeToken}>Store token</button>
-                    </div>
                 </div>
             )}
         </>

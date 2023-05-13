@@ -4,7 +4,7 @@ import { Tile } from "./Tile.jsx";
 
 const BASE_URL = "https://api.spotify.com/v1/me/top";
 
-function Home({ accessToken }) {
+function Home({ token }) {
     const [isLoading, setIsLoading] = useState(true);
     const [favoriteArtists, setFavoriteArtists] = useState([]);
 
@@ -15,7 +15,7 @@ function Home({ accessToken }) {
         return fetch(BASE_URL + "/artists?" + query.toString(), {
             headers: {
                 "Content-Type": "application/json",
-                Authorization: "Bearer " + accessToken
+                Authorization: "Bearer " + token
             }
         })
             .then((res) => {
@@ -50,7 +50,7 @@ function Home({ accessToken }) {
         return fetch(BASE_URL + "/tracks?" + query.toString(), {
             headers: {
                 "Content-Type": "application/json",
-                Authorization: "Bearer " + accessToken
+                Authorization: "Bearer " + token
             }
         })
             .then((res) => {
@@ -92,7 +92,6 @@ function Home({ accessToken }) {
     useEffect(() => {
         getTopArtists().then((artists) => {
             mapTracksToArtists(artists).then((artists) => {
-                // console.log(JSON.stringify(artists, null, "\t"));
                 setFavoriteArtists(artists);
                 setIsLoading(false);
             });
@@ -107,11 +106,15 @@ function Home({ accessToken }) {
                 <div
                     style={{
                         display: "flex",
-                        flexDirection: "column"
+                        flexDirection: "row",
+                        flexWrap: "wrap",
+                        backgroundColor: "#ff00ff",
+                        paddingTop: "15px",
+                        paddingBottom: "15px"
                     }}
                 >
                     {favoriteArtists.slice(0, 4).map((current, index) => {
-                        return <Tile artist={current} key={index}/>;
+                        return <Tile artist={current} key={index} />;
                     })}
                 </div>
             )}
