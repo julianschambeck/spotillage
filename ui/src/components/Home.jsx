@@ -37,15 +37,7 @@ function Home({ token }) {
             {isLoading ? (
                 <div>Still loading, just a sec</div>
             ) : (
-                <div
-                    style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        flexWrap: "wrap",
-                        paddingTop: "15px",
-                        paddingBottom: "15px",
-                    }}
-                >
+                <div id="home">
                     {artists.map((a) => {
                         return <ArtistTile artist={a} key={a.id} />;
                     })}
