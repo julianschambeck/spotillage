@@ -1,5 +1,5 @@
 function Tile({ artist }) {
-    const url = artist.imageDetails.url;
+    const url = artist.images[2].url;
     return (
         <div
             style={{
@@ -14,33 +14,22 @@ function Tile({ artist }) {
                 marginRight: "15px",
                 borderRadius: "10px",
                 borderStyle: "solid",
-                borderWidth: "1px"
-
+                borderWidth: "1px",
             }}
         >
-            <div style={{textAlign: "center"}}>
+            <div style={{ textAlign: "center" }}>
                 <div
                     style={{
                         backgroundImage: `url(${url})`,
                         width: "140px",
                         height: "140px",
-                        borderRadius: "50%"
+                        borderRadius: "50%",
                     }}
                 ></div>
                 <p>
-                {artist.name}<br />
-                </p>
-                {/*
-                <div>
                     {artist.name}
                     <br />
-                    Genres: {JSON.stringify(artist.genres)}
-                    <br />
-                    Popularity: {artist.popularity}
-                    <br />
-                    Follower count: {artist.followersCount}
-                </div>
-                */}
+                </p>
             </div>
         </div>
     );

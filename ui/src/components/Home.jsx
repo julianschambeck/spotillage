@@ -1,101 +1,35 @@
 import { useEffect, useState } from "react";
 
 import { Tile } from "./Tile.jsx";
-
-const BASE_URL = "https://api.spotify.com/v1/me/top";
+import { fetchTopArtists, fetchTopTracks } from "../queries/";
 
 function Home({ token }) {
-    const [isLoading, setIsLoading] = useState(true);
-    const [favoriteArtists, setFavoriteArtists] = useState([]);
-
-    function getTopArtists() {
-        const query = new URLSearchParams({
-            limit: 25
-        });
-        return fetch(BASE_URL + "/artists?" + query.toString(), {
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: "Bearer " + token
-            }
-        })
-            .then((res) => {
-                if (!res.ok) {
-                    throw new Error("Failed to get top artists");
-                }
-                return res.json();
-            })
-            .then((json) => {
-                const favoriteArtists = [];
-                json.items.forEach((artist) => {
-                    favoriteArtists.push({
-                        id: artist.id,
-                        name: artist.name,
-                        genres: artist.genres,
-                        imageDetails: artist.images[2],
-                        popularity: artist.popularity,
-                        url: artist.external_urls.spotify,
-                        followersCount: artist.followers.total,
-                        myFavoriteTracks: []
-                    });
-                });
-                return favoriteArtists;
-            })
-            .catch((error) => console.error(error.message));
-    }
-
-    function mapTracksToArtists(artists) {
-        const query = new URLSearchParams({
-            limit: 30
-        });
-        return fetch(BASE_URL + "/tracks?" + query.toString(), {
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: "Bearer " + token
-            }
-        })
-            .then((res) => {
-                if (!res.ok) {
-                    throw new Error("Failed to get top tracks");
-                }
-                return res.json();
-            })
-            .then((json) => {
-                const favoriteArtists = [...artists];
-                // map my favorite tracks to my favorite artists
-                const tracks = json.items;
-                tracks.forEach((current) => {
-                    const artistsOfTrack = current.artists;
-                    const track = {
-                        id: current.id,
-                        name: current.name,
-                        popularity: current.popularity,
-                        previewUrl: current.preview_url,
-                        url: current.external_urls.spotify,
-                        albumName: current.album.name
-                    };
-                    const associatedArtist = favoriteArtists.find(
-                        (favoriteArtist) =>
-                            !!artistsOfTrack.find(
-                                (artist) => artist.id === favoriteArtist.id
-                            )
-                    );
-                    if (associatedArtist) {
-                        // the track is from one of my favorite artists
-                        associatedArtist.myFavoriteTracks.push(track);
-                    }
-                });
-                return favoriteArtists;
-            })
-            .catch((error) => console.error(error.message));
-    }
+    const [isLoading, setIsLoading] = useState(false);
+    const [artists, setArtists] = useState([]);
 
     useEffect(() => {
-        getTopArtists().then((artists) => {
-            mapTracksToArtists(artists).then((artists) => {
-                setFavoriteArtists(artists);
-                setIsLoading(false);
-            });
-        });
+        // load all necessary data at once
+        const loadData = async () => {
+            setIsLoading(true);
+            let response = await fetchTopArtists(token);
+            let artists = [];
+            let tracks = [];
+            if (response.ok) {
+                artists = (await response.json()).items;
+                artists.forEach((a) => {
+                    a.tracks = [];
+                });
+            }
+            response = await fetchTopTracks(token);
+            if (response.ok) {
+                tracks = (await response.json()).items;
+                artists = distributeTracks(tracks, artists);
+                console.log(artists);
+                setArtists(artists);
+            }
+            setIsLoading(false);
+        };
+        loadData().catch(console.error);
     }, []);
 
     return (
@@ -110,10 +44,10 @@ function Home({ token }) {
                         flexWrap: "wrap",
                         backgroundColor: "#ff00ff",
                         paddingTop: "15px",
-                        paddingBottom: "15px"
+                        paddingBottom: "15px",
                     }}
                 >
-                    {favoriteArtists.slice(0, 4).map((current, index) => {
+                    {artists.slice(0, 4).map((current, index) => {
                         return <Tile artist={current} key={index} />;
                     })}
                 </div>
@@ -123,3 +57,19 @@ function Home({ token }) {
 }
 
 export default Home;
+
+/* assign tracks to respective artists */
+function distributeTracks(tracks, artists) {
+    const resultArtists = [...artists];
+    resultArtists.forEach((artist) => {
+        for (const track of tracks) {
+            const hasArtist = !!track.artists.find((a) => {
+                return a.id == artist.id;
+            });
+            if (hasArtist) {
+                artist.tracks.push(track);
+            }
+        }
+    });
+    return resultArtists;
+}
