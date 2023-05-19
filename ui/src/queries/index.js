@@ -11,7 +11,7 @@ function getHeaders(token) {
 
 function fetchTopArtists(token) {
     const query = new URLSearchParams({
-        limit: 25,
+        limit: 20,
     });
     const headers = getHeaders(token);
     return fetch(BASE_URL + "/artists?" + query.toString(), {

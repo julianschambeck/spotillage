@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
-import { Tile } from "./Tile.jsx";
-import { fetchTopArtists, fetchTopTracks } from "../queries/";
+import ArtistTile from "./ArtistTile.jsx";
+import { fetchTopArtists, fetchTopTracks } from "../queries";
 
 function Home({ token }) {
     const [isLoading, setIsLoading] = useState(false);
@@ -24,7 +24,7 @@ function Home({ token }) {
             if (response.ok) {
                 tracks = (await response.json()).items;
                 artists = distributeTracks(tracks, artists);
-                console.log(artists);
+                console.log("artists", artists);
                 setArtists(artists);
             }
             setIsLoading(false);
@@ -42,13 +42,12 @@ function Home({ token }) {
                         display: "flex",
                         flexDirection: "row",
                         flexWrap: "wrap",
-                        backgroundColor: "#ff00ff",
                         paddingTop: "15px",
                         paddingBottom: "15px",
                     }}
                 >
-                    {artists.slice(0, 4).map((current, index) => {
-                        return <Tile artist={current} key={index} />;
+                    {artists.map((a) => {
+                        return <ArtistTile artist={a} key={a.id} />;
                     })}
                 </div>
             )}
