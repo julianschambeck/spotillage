@@ -7,16 +7,19 @@
  * https://developer.spotify.com/web-api/authorization-guide/#authorization_code_flow
  */
 
+require('dotenv').config()
+
 var express = require('express'); // Express web server framework
 var request = require('request'); // "Request" library
 var cors = require('cors');
 var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
 
-var client_id = '552221d4641b47f68d756645b7cc32ba'; // Your client id
-var client_secret = '9c4705b47da545de9ef9b6e77921de46'; // Your secret
-var redirect_uri = 'http://localhost:8888/callback'; // Your redirect uri
-var frontend = "http://localhost:3000/";
+var client_id = process.env.CLIENT_ID; // Your client id
+var client_secret = process.env.CLIENT_SECRET; // Your secret
+var redirect_uri = process.env.REDIRECT_URI; // Your redirect uri
+var frontend = process.env.FRONTEND;
+
 
 /**
  * Generates a random string containing numbers and letters
@@ -105,7 +108,6 @@ app.get('/callback', function(req, res) {
         });
 
         // we can also pass the token to the browser to make requests from there
-        console.log("redirect to frontend", frontend);
         res.redirect(frontend +
           querystring.stringify({
             access_token: access_token,

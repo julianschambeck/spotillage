@@ -1,7 +1,7 @@
 function ArtistTile({ artist }) {
     const url = artist.images[2].url;
     return (
-        <div class="tileContainer">
+        <div className="tileContainer">
             <div
                 style={{
                     backgroundImage: `url(${url})`,

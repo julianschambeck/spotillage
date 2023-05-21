@@ -30,7 +30,7 @@ function Home({ token }) {
             setIsLoading(false);
         };
         loadData().catch(console.error);
-    }, []);
+    }, [token]);
 
     return (
         <>
@@ -55,7 +55,7 @@ function distributeTracks(tracks, artists) {
     resultArtists.forEach((artist) => {
         for (const track of tracks) {
             const hasArtist = !!track.artists.find((a) => {
-                return a.id == artist.id;
+                return a.id === artist.id;
             });
             if (hasArtist) {
                 artist.tracks.push(track);
