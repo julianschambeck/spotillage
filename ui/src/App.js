@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { Fragment, useState, useEffect } from "react";
+import CssBaseline from "@mui/material/CssBaseline";
 
 import Home from "./components/Home.jsx";
 
@@ -23,7 +24,8 @@ function App() {
     }, [userState]);
 
     return (
-        <>
+        <Fragment>
+            <CssBaseline />
             {userState.auth ? (
                 <Home token={userState.accessToken} />
             ) : (
@@ -35,7 +37,7 @@ function App() {
                     </p>
                 </div>
             )}
-        </>
+        </Fragment>
     );
 }
 

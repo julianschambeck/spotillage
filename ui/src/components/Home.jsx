@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Button from '@mui/material/Button';
 
 import ArtistTile from "./ArtistTile.jsx";
 import { fetchTopArtists, fetchTopTracks } from "../queries";
@@ -37,10 +38,15 @@ function Home({ token }) {
             {isLoading ? (
                 <div>Still loading, just a sec</div>
             ) : (
-                <div id="home">
-                    {artists.map((a) => {
-                        return <ArtistTile artist={a} key={a.id} />;
-                    })}
+                <div id="outerContainer">
+                    <h1 style={{ textAlign: "center" }}>
+                        Spotillage - a collage of your favorite artists
+                    </h1>
+                    <div id="collage">
+                        {artists.map((a) => {
+                            return <ArtistTile artist={a} key={a.id} />;
+                        })}
+                    </div>
                 </div>
             )}
         </>
