@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
-import Button from '@mui/material/Button';
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import ImageList from "@mui/material/ImageList";
+import ImageListItem from "@mui/material/ImageListItem";
 
-import ArtistTile from "./ArtistTile.jsx";
 import { fetchTopArtists, fetchTopTracks } from "../queries";
 
 function Home({ token }) {
@@ -25,7 +27,6 @@ function Home({ token }) {
             if (response.ok) {
                 tracks = (await response.json()).items;
                 artists = distributeTracks(tracks, artists);
-                console.log("artists", artists);
                 setArtists(artists);
             }
             setIsLoading(false);
@@ -38,16 +39,26 @@ function Home({ token }) {
             {isLoading ? (
                 <div>Still loading, just a sec</div>
             ) : (
-                <div id="outerContainer">
-                    <h1 style={{ textAlign: "center" }}>
-                        Spotillage - a collage of your favorite artists
-                    </h1>
-                    <div id="collage">
+                <Container>
+                    <h1 style={{ textAlign: "center" }}>Spotillage</h1>
+                    <h3 style={{ marginBottom: 40, textAlign: "center" }}>
+                        a collage of your favorite artists on Spotify
+                    </h3>
+                    <ImageList cols={5} gap={6}>
                         {artists.map((a) => {
-                            return <ArtistTile artist={a} key={a.id} />;
+                            // choose image with highest resolution
+                            const { url, width, height } = a.images[0];
+                            return (
+                                <ImageListItem key={a.id}>
+                                    <img
+                                        src={`${url}?w=${width}&h=${height}&fit=crop&auto=format`}
+                                        loading="lazy"
+                                    />
+                                </ImageListItem>
+                            );
                         })}
-                    </div>
-                </div>
+                    </ImageList>
+                </Container>
             )}
         </>
     );

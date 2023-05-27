@@ -25,7 +25,7 @@ function App() {
 
     return (
         <Fragment>
-            <CssBaseline />
+            <CssBaseline enableColorScheme />
             {userState.auth ? (
                 <Home token={userState.accessToken} />
             ) : (
