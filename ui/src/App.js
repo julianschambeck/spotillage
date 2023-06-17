@@ -11,6 +11,7 @@ function App() {
     });
 
     useEffect(() => {
+        // GET AND STORE ACCESS TOKEN
         let url = window.location.origin + window.location.pathname.replace("/", "?");
         if (url.includes("access_token") && !userState.auth) {
             url = new URL(url);
@@ -24,7 +25,7 @@ function App() {
     }, [userState]);
 
     return (
-        <Fragment>
+        <>
             <CssBaseline enableColorScheme />
             {userState.auth ? (
                 <Home token={userState.accessToken} />
@@ -37,7 +38,7 @@ function App() {
                     </p>
                 </div>
             )}
-        </Fragment>
+        </>
     );
 }
 
