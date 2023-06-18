@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import Popover from "@mui/material/Popover";
@@ -59,10 +60,10 @@ function Home({ token }) {
                 <div>Still loading, just a sec</div>
             ) : (
                 <Container>
-                    <h1 style={{ textAlign: "center" }}>Spotillage</h1>
-                    <h3 style={{ marginBottom: 40, textAlign: "center" }}>
+                    <Typography variant="h3" sx={{textAlign: "center", color: "primary.main"}}>Spotillage</Typography>
+                    <Typography variant="h6" sx={{ color: "primary.main", mt: 2, mb: 6, textAlign: "center" }}>
                         a collage of your favorite artists on Spotify
-                    </h3>
+                    </Typography>
                     <Popover
                         id="artist-details"
                         open={isOpen}

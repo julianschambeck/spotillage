@@ -1,7 +1,19 @@
-import { Fragment, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import CssBaseline from "@mui/material/CssBaseline";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 
 import Home from "./components/Home.jsx";
+
+const theme = createTheme({
+    palette: {
+        mode: "dark",
+        primary: {
+            main: "#57996d",
+            dark: "#448358",
+            light: "#78AD8A",
+        },
+    },
+});
 
 function App() {
     const [userState, setUserState] = useState({
@@ -25,12 +37,12 @@ function App() {
     }, [userState]);
 
     return (
-        <>
+        <ThemeProvider theme={theme}>
             <CssBaseline enableColorScheme />
             {userState.auth ? (
                 <Home token={userState.accessToken} />
             ) : (
-                // login screen
+                // Login screen
                 <div>
                     <p>
                         You need to login to Spotify first{" "}
@@ -38,7 +50,7 @@ function App() {
                     </p>
                 </div>
             )}
-        </>
+        </ThemeProvider>
     );
 }
 

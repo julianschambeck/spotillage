@@ -1,7 +1,15 @@
-import { Typography, Rating, Paper, Link, Box, Chip, Divider } from "@mui/material";
+import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
-import { useTheme } from "@mui/material/styles";
-import { MusicNote, Favorite, FavoriteBorder } from "@mui/icons-material";
+import Rating from "@mui/material/Rating";
+import Paper from "@mui/material/Paper";
+import Link from "@mui/material/Link";
+import Box from "@mui/material/Box";
+import Chip from "@mui/material/Chip";
+import Divider from "@mui/material/Divider";
+
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import MusicNoteIcon from '@mui/icons-material/MusicNote';
 
 const ListItem = styled("li")(({ theme }) => ({
     margin: theme.spacing(0.5),
@@ -53,8 +61,8 @@ function ArtistDetails({ artist, rank }) {
                 sx={{ mt: 1 }}
                 defaultValue={popularityScaled}
                 precision={0.25}
-                icon={<Favorite fontSize="inherit" />}
-                emptyIcon={<FavoriteBorder fontSize="inherit" />}
+                icon={<FavoriteIcon fontSize="inherit" />}
+                emptyIcon={<FavoriteBorderIcon fontSize="inherit" />}
                 readOnly
             />
             <Typography mt={1}>
@@ -115,7 +123,7 @@ function ArtistDetails({ artist, rank }) {
                         component="ul"
                     >
                         {artist.tracks.map((track) => {
-                            const icon = <MusicNote />;
+                            const icon = <MusicNoteIcon />;
                             return (
                                 <ListItem key={track.id}>
                                     <Chip
