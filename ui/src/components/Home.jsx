@@ -8,6 +8,7 @@ import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import InfoIcon from "@mui/icons-material/Info";
 import Box from "@mui/material/Box";
+import LinearProgress from "@mui/material/LinearProgress";
 
 import { fetchTopArtists, fetchTopTracks } from "../queries";
 import ArtistDetails from "./ArtistDetails";
@@ -61,7 +62,16 @@ function Home({ token }) {
     return (
         <>
             {isLoading ? (
-                <div>Still loading, just a sec</div>
+                <Container
+                    sx={{ mt: 6, display: "flex", flexDirection: "column", alignItems: "center" }}
+                >
+                    <Typography variant="h6">
+                        Loading your favorite artists, just a moment...
+                    </Typography>
+                    <Box sx={{ mt: 2, width: "60%" }}>
+                        <LinearProgress />
+                    </Box>
+                </Container>
             ) : (
                 <Container>
                     <Typography variant="h3" sx={{ textAlign: "center", color: "primary.main" }}>
@@ -86,11 +96,11 @@ function Home({ token }) {
                                     <Typography variant="h5"></Typography>
                                     <Typography>
                                         Spotillage is designed to show you a list of your top 20
-                                        favorite artists {"\u2013"} in the form of a collage. Hover above an
-                                        artist image and you will see further details like: the
-                                        genres the artist covers; the tracks you listen to the most;
-                                        and the general popularity of the artist on Spotify. As such
-                                        you can also figure out whether you listen mostly to
+                                        favorite artists {"\u2013"} in the form of a collage. Hover
+                                        above an artist image and you will see further details like:
+                                        the genres the artist covers; the tracks you listen to the
+                                        most; and the general popularity of the artist on Spotify.
+                                        As such you can also figure out whether you listen mostly to
                                         mainstream artists (or not).
                                     </Typography>
                                 </>
