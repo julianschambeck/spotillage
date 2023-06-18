@@ -3,6 +3,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 
 import Home from "./components/Home.jsx";
+import Login from "./components/Login.jsx";
 
 const theme = createTheme({
     palette: {
@@ -41,14 +42,7 @@ function App() {
             <CssBaseline enableColorScheme />
             {userState.auth ? (
                 <Home token={userState.accessToken} />
-            ) : (
-                // Login screen
-                <div>
-                    <p>
-                        You need to login to Spotify first{" "}
-                        <a href="http://localhost:8888/login">here</a>
-                    </p>
-                </div>
+            ) : (<Login />
             )}
         </ThemeProvider>
     );
