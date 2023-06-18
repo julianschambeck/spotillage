@@ -3,8 +3,6 @@ import Container from "@mui/material/Container";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import Popover from "@mui/material/Popover";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 
 import { fetchTopArtists, fetchTopTracks } from "../queries";
 import ArtistDetails from "./ArtistDetails";
@@ -91,6 +89,7 @@ function Home({ token }) {
                                     <img
                                         src={`${url}?w=${width}&h=${height}&fit=crop&auto=format`}
                                         loading="lazy"
+                                        alt="specific artist"
                                     />
                                 </ImageListItem>
                             );
