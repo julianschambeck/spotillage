@@ -4,6 +4,10 @@ import Typography from "@mui/material/Typography";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import Popover from "@mui/material/Popover";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
+import InfoIcon from "@mui/icons-material/Info";
+import Box from "@mui/material/Box";
 
 import { fetchTopArtists, fetchTopTracks } from "../queries";
 import ArtistDetails from "./ArtistDetails";
@@ -60,10 +64,44 @@ function Home({ token }) {
                 <div>Still loading, just a sec</div>
             ) : (
                 <Container>
-                    <Typography variant="h3" sx={{textAlign: "center", color: "primary.main"}}>Spotillage</Typography>
-                    <Typography variant="h6" sx={{ color: "primary.main", mt: 2, mb: 6, textAlign: "center" }}>
-                        a collage of your favorite artists on Spotify
+                    <Typography variant="h3" sx={{ textAlign: "center", color: "primary.main" }}>
+                        Spotillage
                     </Typography>
+                    <Box
+                        sx={{
+                            display: "flex",
+                            flexDirection: "row",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            mt: 2,
+                            mb: 6,
+                        }}
+                    >
+                        <Typography variant="h6" sx={{ color: "primary.main" }}>
+                            a collage of your favorite artists on Spotify
+                        </Typography>
+                        <Tooltip
+                            title={
+                                <>
+                                    <Typography variant="h5"></Typography>
+                                    <Typography>
+                                        Spotillage is designed to show you a list of your top 20
+                                        favorite artists {"\u2013"} in the form of a collage. Hover above an
+                                        artist image and you will see further details like: the
+                                        genres the artist covers; the tracks you listen to the most;
+                                        and the general popularity of the artist on Spotify. As such
+                                        you can also figure out whether you listen mostly to
+                                        mainstream artists (or not).
+                                    </Typography>
+                                </>
+                            }
+                            arrow
+                        >
+                            <IconButton>
+                                <InfoIcon />
+                            </IconButton>
+                        </Tooltip>
+                    </Box>
                     <Popover
                         id="artist-details"
                         open={isOpen}
@@ -75,7 +113,9 @@ function Home({ token }) {
                         }}
                     >
                         <div>
-                            {!!focusedArtist && <ArtistDetails artist={focusedArtist} rank={rank} />}
+                            {!!focusedArtist && (
+                                <ArtistDetails artist={focusedArtist} rank={rank} />
+                            )}
                         </div>
                     </Popover>
                     <ImageList cols={5} gap={4}>
