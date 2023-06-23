@@ -36,7 +36,6 @@ function Home({ token }) {
     const isOpen = Boolean(anchorElement);
 
     useEffect(() => {
-        throw new Error("my error");
         // load all necessary data at once
         const loadData = async () => {
             setIsLoading(true);
