@@ -1,9 +1,13 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { ErrorBoundary } from "react-error-boundary";
 
 import Home from "./components/Home.jsx";
 import Login from "./components/Login.jsx";
+import FallbackOnError from "./components/FallbackOnError.jsx"
 
 const theme = createTheme({
     palette: {
@@ -40,10 +44,9 @@ function App() {
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline enableColorScheme />
-            {userState.auth ? (
-                <Home token={userState.accessToken} />
-            ) : (<Login />
-            )}
+            <ErrorBoundary fallback={<FallbackOnError />}>
+                {userState.auth ? <Home token={userState.accessToken} /> : <Login />}
+            </ErrorBoundary>
         </ThemeProvider>
     );
 }
