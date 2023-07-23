@@ -13,7 +13,7 @@ import LinearProgress from "@mui/material/LinearProgress";
 import { fetchTopArtists, fetchTopTracks } from "../queries";
 import ArtistDetails from "./ArtistDetails";
 
-function Home({ token }) {
+function Home() {
     const [isLoading, setIsLoading] = useState(false);
     const [artists, setArtists] = useState([]);
 
@@ -39,6 +39,8 @@ function Home({ token }) {
         // load all necessary data at once
         const loadData = async () => {
             setIsLoading(true);
+            const token = localStorage.getItem("access_token");
+            console.log("my token", token)
             let response = await fetchTopArtists(token);
             let artists = [];
             let tracks = [];
@@ -57,7 +59,7 @@ function Home({ token }) {
             setIsLoading(false);
         };
         loadData().catch(console.error);
-    }, [token]);
+    }, []);
 
     return (
         <>
