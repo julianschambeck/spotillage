@@ -96,13 +96,11 @@ function Home() {
                                 <>
                                     <Typography variant="h5"></Typography>
                                     <Typography>
-                                        Spotillage is designed to show you a list of your top 20
-                                        favorite artists {"\u2013"} in the form of a collage. Hover
-                                        above an artist image and you will see further details like:
-                                        the genres the artist covers; the tracks you listen to the
-                                        most; and the general popularity of the artist on Spotify.
-                                        As such you can also figure out whether you listen mostly to
-                                        mainstream artists (or not).
+                                        Spotillage shows you a list of your top 20 favorite artists{" "}
+                                        {"\u2013"} in the form of a collage. Click on an artist
+                                        image and you will see further details like: the music
+                                        genres which the artist covers, the tracks you listen to the
+                                        most, and the general popularity of the artist on Spotify.
                                     </Typography>
                                 </>
                             }
@@ -137,6 +135,7 @@ function Home() {
                                 <ImageListItem
                                     onClick={(event) => handleClick(event, artist, index + 1)}
                                     key={artist.id}
+                                    sx={{cursor: "pointer"}}
                                 >
                                     <img
                                         src={`${url}?w=${width}&h=${height}&fit=crop&auto=format`}
