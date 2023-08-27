@@ -40,7 +40,6 @@ function Home() {
         const loadData = async () => {
             setIsLoading(true);
             const token = localStorage.getItem("access_token");
-            console.log("my token", token)
             let response = await fetchTopArtists(token);
             let artists = [];
             let tracks = [];

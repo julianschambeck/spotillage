@@ -1,12 +1,11 @@
 import { useEffect } from "react";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import Link from "@mui/material/Link";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 
-const clientId = "552221d4641b47f68d756645b7cc32ba";
-const redirectUri = "http://localhost:3000";
+const CLIENT_ID = "552221d4641b47f68d756645b7cc32ba";
+const REDIRECT_URI = "http://localhost:3000";
 
 function Login({ setIsAuthorized }) {
     useEffect(() => {
@@ -22,6 +21,9 @@ function Login({ setIsAuthorized }) {
                     }
                 })
                 .catch(console.log);
+        } else if (accessToken) {
+            // Token already there
+            setIsAuthorized(true);
         }
     }, [setIsAuthorized]);
 
@@ -63,8 +65,8 @@ async function requestToken(code) {
     const body = new URLSearchParams({
         grant_type: "authorization_code",
         code: code,
-        redirect_uri: redirectUri,
-        client_id: clientId,
+        redirect_uri: REDIRECT_URI,
+        client_id: CLIENT_ID,
         code_verifier: codeVerifier,
     });
     const response = await fetch("https://accounts.spotify.com/api/token", {
@@ -92,9 +94,9 @@ async function requestCode() {
 
     const args = new URLSearchParams({
         response_type: "code",
-        client_id: clientId,
+        client_id: CLIENT_ID,
         scope: scope,
-        redirect_uri: redirectUri,
+        redirect_uri: REDIRECT_URI,
         state: state,
         code_challenge_method: "S256",
         code_challenge: codeChallenge,
