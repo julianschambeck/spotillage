@@ -5,7 +5,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 
 export const CLIENT_ID = "552221d4641b47f68d756645b7cc32ba";
-const REDIRECT_URI = "http://localhost:3000";
+const REDIRECT_URI = "https://julianschambeck.github.io/spotillage/";
 
 function Login({ setIsAuthorized }) {
     useEffect(() => {
