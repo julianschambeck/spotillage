@@ -11,9 +11,8 @@ import Box from "@mui/material/Box";
 import LinearProgress from "@mui/material/LinearProgress";
 
 import { fetchTopArtists, fetchTopTracks } from "../queries";
+import { CLIENT_ID } from "./Login";
 import ArtistDetails from "./ArtistDetails";
-
-const CLIENT_ID = "552221d4641b47f68d756645b7cc32ba";
 
 function Home() {
     const [isLoading, setIsLoading] = useState(false);

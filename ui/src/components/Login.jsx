@@ -4,7 +4,7 @@ import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 
-const CLIENT_ID = "552221d4641b47f68d756645b7cc32ba";
+export const CLIENT_ID = "552221d4641b47f68d756645b7cc32ba";
 const REDIRECT_URI = "http://localhost:3000";
 
 function Login({ setIsAuthorized }) {
@@ -41,8 +41,7 @@ function Login({ setIsAuthorized }) {
             >
                 <Typography>
                     First you need to login to Spotify. This is so that Spotillage can list your
-                    favorite artists. Spotillage does not store any of your Spotify data nor your
-                    Spotify Account credentials.
+                    favorite artists. Spotillage does not store any of your Spotify data.
                 </Typography>
                 <Button
                     variant="contained"
@@ -106,6 +105,7 @@ async function requestCode() {
 }
 
 /* HELPERS */
+
 function generateRandomString(length) {
     let text = "";
     let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";

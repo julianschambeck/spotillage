@@ -1,6 +1,5 @@
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import Link from "@mui/material/Link";
 import AndroidIcon from "@mui/icons-material/Android";
 import Button from "@mui/material/Button";
 import { useErrorBoundary } from "react-error-boundary";
