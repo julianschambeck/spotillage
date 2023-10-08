@@ -5,7 +5,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 
 const CLIENT_ID = "552221d4641b47f68d756645b7cc32ba";
-const REDIRECT_URI = "https://julianschambeck.github.io/spotillage";
+const REDIRECT_URI = "http://localhost:3000";
 
 function Login({ setIsAuthorized }) {
     useEffect(() => {
@@ -82,6 +82,7 @@ async function requestToken(code) {
     }
     const data = await response.json();
     localStorage.setItem("access_token", data.access_token);
+    localStorage.setItem("refresh_token", data.refresh_token);
 }
 
 /* First step to authorize app */

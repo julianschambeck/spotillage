@@ -13,6 +13,8 @@ import LinearProgress from "@mui/material/LinearProgress";
 import { fetchTopArtists, fetchTopTracks } from "../queries";
 import ArtistDetails from "./ArtistDetails";
 
+const CLIENT_ID = "552221d4641b47f68d756645b7cc32ba";
+
 function Home() {
     const [isLoading, setIsLoading] = useState(false);
     const [artists, setArtists] = useState([]);
@@ -39,6 +41,9 @@ function Home() {
         // load all necessary data at once
         const loadData = async () => {
             setIsLoading(true);
+            if (isTokenAboutToExpire()) {
+                await refreshToken();
+            }
             const token = localStorage.getItem("access_token");
             let response = await fetchTopArtists(token);
             let artists = [];
@@ -57,7 +62,7 @@ function Home() {
             }
             setIsLoading(false);
         };
-        loadData().catch(console.error);
+        loadData().catch(console.log);
     }, []);
 
     return (
@@ -135,7 +140,7 @@ function Home() {
                                 <ImageListItem
                                     onClick={(event) => handleClick(event, artist, index + 1)}
                                     key={artist.id}
-                                    sx={{cursor: "pointer"}}
+                                    sx={{ cursor: "pointer" }}
                                 >
                                     <img
                                         src={`${url}?w=${width}&h=${height}&fit=crop&auto=format`}
@@ -168,4 +173,33 @@ function distributeTracks(tracks, artists) {
         }
     });
     return resultArtists;
+}
+
+async function refreshToken() {
+    const body = new URLSearchParams({
+        grant_type: "refresh_token",
+        refresh_token: localStorage.getItem("refresh_token"),
+        client_id: CLIENT_ID,
+    });
+    const response = await fetch("https://accounts.spotify.com/api/token", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: body,
+    });
+    if (response.ok) {
+        const data = await response.json();
+        // update tokens
+        localStorage.setItem("access_token", data.access_token);
+        localStorage.setItem("refresh_token", data.refresh_token);
+        localStorage.setItem("expires_at", Date.now() + data.expires_in * 1000);
+    }
+}
+
+function isTokenAboutToExpire() {
+    const now = Date.now();
+    const expiresAt = localStorage.getItem("expires_at");
+    // does token expire in 10 minutes ish or has already expired
+    return !((expiresAt - now) / 1000 > 600);
 }
